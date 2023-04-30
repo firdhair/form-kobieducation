@@ -1,0 +1,64 @@
+////////////////////////////////// Color Palette //////////////////////////////////
+$grey-100: #f1f5f7;
+$grey-200: #e2e8ee;
+$grey-300: #ccd8e1;
+$grey-400: #9badbb;
+$grey-500: #768999;
+$grey-600: #233644;
+$grey-dots: #8c9eae;
+
+$blue-100: #d1e7f9;
+$blue-200: #caf0ec;
+$blue-300: #0b8be1;
+$blue-400: #34a0e7;
+
+$red-100: #fbd9de;
+$red-200: #e43357;
+
+$purple-100: #6e4cfe;
+
+////////////////////////////////// Shadow Palette //////////////////////////////////
+$shadow-base: 0px 1px 3px rgba(0, 0, 0, 0.1), 0px 1px 2px rgba(0, 0, 0, 0.06);
+$shadow-md: 0px 4px 6px -1px rgba(0, 0, 0, 0.1),
+  0px 2px 4px -1px rgba(0, 0, 0, 0.06);
+
+////////////////////////////////// Sizing //////////////////////////////////
+$big-1: calc(1.8rem + 1vw);
+$big-2: calc(1.5rem + 1vw);
+$big-3: calc(1.1rem + 1vw);
+$big-4: calc(1rem + 1vw);
+$big-5: calc(0.8rem + 1vw);
+
+$medium-1: calc(1.3rem + 1vw);
+$medium-2: calc(1rem + 1vw);
+$medium-3: calc(0.6rem + 1vw);
+
+$regular-1: calc(1rem + 1vw);
+$regular-2: calc(0.7rem + 1vw);
+$regular-3: calc(0.2rem + 1vw);
+$regular-4: calc(0.1rem + 1vw);
+
+@mixin flex($justify, $align, $direction) {
+  display: flex;
+  justify-content: $justify;
+  align-items: $align;
+  flex-direction: $direction;
+}
+
+@mixin mobile {
+  @media only screen and (max-width: 400px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media only screen and (max-width: 768px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media only screen and (min-width: 1400px) {
+    @content;
+  }
+}
