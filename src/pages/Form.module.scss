@@ -85,11 +85,11 @@
       margin: 4.5rem auto;
     }
     &__questions {
-      flex: 1 1 65%;
+      flex: 1 1 70%;
       margin: 1rem 6rem 1rem 0rem;
     }
     &__questionsstatus {
-      flex: 1 1 35%;
+      flex: 1 1 30%;
       background-color: mixin.$grey-100;
       margin: 1rem 0rem;
     }
@@ -194,6 +194,7 @@
         //font-weight: 400;
       }
       input {
+        margin-left: 0.5rem;
         border: none;
         width: 25%;
         &::placeholder {
@@ -206,7 +207,7 @@
         margin: 1rem 0rem;
       }
       &__num {
-        // background-color: lavender;
+        //background-color: lavender;
         label {
           margin-left: 5rem;
           color: mixin.$grey-600;
@@ -315,16 +316,24 @@
         }
         span {
           margin-right: 0.5rem;
+          font-weight: 500;
         }
         input {
           background-color: mixin.$grey-100;
           border: none;
-          width: 20%;
+          width: 40%;
+          margin-right: 0.5rem;
           &::placeholder {
             color: mixin.$grey-400;
           }
         }
       }
+    }
+  }
+  .warning {
+    font-size: mixin.$regular-3;
+    @include mixin.mobile {
+      font-size: mixin.$medium-3;
     }
   }
 }
@@ -358,8 +367,42 @@
 
 .kobi_container_hero_wrapper__questionsstatus {
   padding: 2rem 3rem;
+  height: 65rem;
   h5 {
     //font-size: mixin.$regular-3;
     font-weight: 500;
+    margin-bottom: 0.5rem;
+  }
+  .status {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    gap: 1rem;
+    margin: 2.5rem 0rem;
+    &__answer {
+      @include mixin.flex(center, center, row);
+      //background-color: mixin.$blue-200;
+      padding: 1rem;
+      border-radius: 50%;
+      p {
+        color: mixin.$grey-600;
+      }
+    }
+  }
+  .ket_circle {
+    @include mixin.flex(flex-start, center, row);
+    margin-bottom: 1rem;
+    .circle_blue,
+    .circle_red {
+      padding: 1rem;
+      margin-right: 1rem;
+      //margin-bottom: 1rem;
+      border-radius: 50%;
+    }
+    .circle_blue {
+      background-color: mixin.$blue-200;
+    }
+    .circle_red {
+      background-color: mixin.$red-100;
+    }
   }
 }

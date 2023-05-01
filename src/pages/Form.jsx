@@ -12,27 +12,183 @@ import img from '../media/img/no-image.png'
 import List from "../components/List"
 import Modal from "../components/Modal"
 
-const Form = () => {
-    const [task, setTask] = useState("")
-    const [tasks, setTasks] = useState(() => {
-        const savedTasks = localStorage.getItem("tasks")
-        if (savedTasks) {
-            return JSON.parse(savedTasks)
-        } else {
-            return []
+const Form = () => { 
+  const [isValid, setIsValid] = useState(true);
+  const [isValid2, setIsValid2] = useState(true);
+  const [isMoreThanThreeWords, setIsMoreThanThreeWords] = useState(false)
+
+    const [questions, setQuestions] = useState([
+        {   no: 1, 
+            question: 'Where is the woman from?',
+            options: ['German', 'Russia', 'Australia', 'Indonesia'],
+            answer: ''
+        },
+        {   no: 2, 
+            question: 'The woman says that you can travel from Croatia to German in 2 hours by',
+            options: ['German', 'Russia', 'Australia', 'Indonesia'],
+            answer: ''
+        },
+        {   no: 3, 
+            question: 'Where did the woman start her European adventure?',
+            options: ['German', 'Russia', 'Australia', 'Indonesia'],
+            answer: ''
+        },
+        {   no: 4, 
+            question: 'What is the name of the famous museum Lina visited in Amsterdam?',
+            options: ['The Louvre', 'The Van Gogh Museum', 'The British Museum', 'The Rijksmuseum'],
+            answer: ''
+        },
+        {   no: 5, 
+            question: 'What festival did the woman attend in Germany?',
+            options: ['The Carnival of Venice', 'The Oktoberfest beer festival', 'The La Tomatina festival', 'The Running of the Bulls festival'],
+            answer: ''
+        },
+        {   no: 6, 
+            question: 'In which city did the woman try delicious gelato?',
+            options: ['German', 'Russia', 'Australia', 'Indonesia'],
+            answer: ''
+        },
+        {
+            no: 7,
+            question: '',
+            options: [],
+            answer: ''
+        },
+        {
+            no: 8,
+            question: '',
+            options: [],
+            answer: ''
+        },
+        {
+            no: 9,
+            question: '',
+            options: [],
+            answer: ''
+        },
+        {
+            no: 10,
+            question: '',
+            options: [],
+            answer: ''
+        },
+        {
+            no: 11,
+            question: 'traffic lights',
+            options: [],
+            answer: ''
+        },
+        {
+            no: 12,
+            question: 'petrol station',
+            options: [],
+            answer: ''
+        },
+        {
+            no: 13,
+            question: 'blue van',
+            options: [],
+            answer: ''
+        },
+        {
+            no: 14,
+            question: 'What end of the market are the properties?',
+            options: [],
+            answer: ''
+        },
+        {
+            no: 15,
+            question: 'What end of the market are the properties?',
+            options: [],
+            answer: ''
+        },
+        {
+            no: 16,
+            question: 'What end of the market are the properties?',
+            options: [],
+            answer: ''
+        },
+    ])
+
+    const handleOptionChange = (e, index) => {
+        const newQuestions = [...questions]
+        newQuestions[index-1] = {
+            no: index,
+            question: questions[index-1]['question'],
+            options: questions[index-1]['options'],
+            answer: `${e.target.value}`
         }
-    })
-    const [isAddNew, setIsAddNew] = useState(false)
-    const [isMoreThan100, setIsMoreThan100] = useState(false)
-    const [isLessThan0, setIsLessThan0] = useState(false)
-    const [isSpecialChar, setIsSpecialChar] = useState(false)
-    const [isOpen, setIsOpen] = useState(false)
-
-    const [selectedOption, setSelectedOption] = useState(null);
-
-    const handleOptionChange = (event) => {
-        setSelectedOption(event.target.value);
+        setQuestions(newQuestions)
     };
+
+    const validation = (event) => {
+        console.log("test handle")
+        const input = event.target.value;
+        const regex = /^(\w+\s*){1,3}$/;
+
+        setIsValid(regex.test(input));
+        return isValid
+    }
+
+    const handleAnswerChange = (event, index) => {
+        const newQuestions = [...questions]
+        console.log("handleAnswerChange")
+        if(!validation(event)){
+            console.log("salah")
+            newQuestions[index-1] = {
+                no: index,
+                question: questions[index-1]['question'],
+                options: questions[index-1]['options'],
+                answer: ``
+            }
+            setQuestions(newQuestions)
+        }
+        else if(validation(event)) {
+            console.log("validation true")
+            try {
+                handleOptionChange(event, index)
+            } catch(e){
+                console.log("error", e)
+            }
+        } 
+    }
+
+    const handleAnswerChange2 = (event, index) => {
+        console.log("handleAnswerChange2")
+        const input = event.target.value;
+        const regex = /^(\w+\s*){1,3}$/;
+        const newQuestions = [...questions]
+
+        setIsValid2(regex.test(input));
+
+        // if(isValid2 === true) {
+        //     console.log("validation2 true")
+        //     try {
+        //         handleOptionChange(event, index)
+        //     } catch(e){
+        //         console.log("error", e)
+        //     }
+        // }
+
+        if(!isValid2){
+            console.log("salah2")
+            newQuestions[index-1] = {
+                no: index,
+                question: questions[index-1]['question'],
+                options: questions[index-1]['options'],
+                answer: ``
+            }
+            setQuestions(newQuestions)
+        }
+        else if(isValid2) {
+            console.log("validation2 true")
+            try {
+                handleOptionChange(event, index)
+            } catch(e){
+                console.log("error", e)
+            }
+        }
+    }
 
     return(
         <div className={styles.kobi_wrapper}> 
@@ -78,54 +234,22 @@ const Form = () => {
                                         <button className={styles.button_1}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
                                     </div>
                                     <p><i>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</i></p>
-                                    <div className={styles.questions__part1__question1__num}>
-                                        <div className={styles.num_question}>
-                                            <p className={styles.num}>1</p>
-                                            <p>Where is the woman from?</p>
+                                    {questions.slice(0,6).map((question, index) => (
+                                        <div className={styles.questions__part1__question1__num} key={index}>
+                                            <div className={styles.num_question}>
+                                                <p className={styles.num}>{question['no']}</p>
+                                                <p>{question['question']}</p>
+                                            </div>
+                                            <div className={styles.options}>
+                                                    {question['options'].map((option) => (
+                                                        <label>
+                                                            <input type="radio" value={option} checked={option === question['answer']} onChange={(e) => handleOptionChange(e, question['no'])} />
+                                                            {option}
+                                                        </label>
+                                                    ))}
+                                            </div>
                                         </div>
-                                        <div className={styles.options}>
-                                                <label>
-                                                    <input type="radio" value="German" checked={selectedOption === "German"} onChange={handleOptionChange} />
-                                                    German
-                                                </label>
-                                                <label>
-                                                    <input type="radio" value="Russia" checked={selectedOption === "Russia"} onChange={handleOptionChange} />
-                                                    Russia
-                                                </label>
-                                                <label>
-                                                    <input type="radio" value="Australia" checked={selectedOption === "Australia"} onChange={handleOptionChange} />
-                                                    Australia
-                                                </label>
-                                                <label>
-                                                    <input type="radio" value="Indonesia" checked={selectedOption === "Indonesia"} onChange={handleOptionChange} />
-                                                    Indonesia
-                                                </label>
-                                        </div>
-                                    </div>
-                                    <div className={styles.questions__part1__question1__num}>
-                                        <div className={styles.num_question}>
-                                            <p className={styles.num}>2</p>
-                                            <p>The woman says that you can travel from Croatia to German in 2 hours by</p>
-                                        </div>
-                                        <div className={styles.options}>
-                                                <label>
-                                                    <input type="radio" value="German" onChange={handleOptionChange}/>
-                                                    German
-                                                </label>
-                                                <label>
-                                                    <input type="radio" value="Russia" onChange={handleOptionChange}/>
-                                                    Russia
-                                                </label>
-                                                <label>
-                                                    <input type="radio" value="Australia" onChange={handleOptionChange} />
-                                                    Australia
-                                                </label>
-                                                <label>
-                                                    <input type="radio" value="Indonesia" onChange={handleOptionChange} />
-                                                    Indonesia
-                                                </label>
-                                        </div>
-                                    </div>
+                                    ))}
                                 </div>
                                 <div className={`${styles.questions__part1__question2}`}>
                                     <div className={styles.questions__part1__question1__info}>
@@ -145,20 +269,21 @@ const Form = () => {
                                                 </label>
                                                 <label>
                                                     Name: Elisabeth <span className={styles.num}>7</span>
-                                                     <input type="text" placeholder='..................................'/>
+                                                    <input type="text" placeholder='..................................' onChange={(event) => handleAnswerChange(event, 7)} />
                                                 </label>
                                                 <label>
-                                                    Date of birth: 8.10.1975
-                                                    <input type="text" placeholder='..................................'/>
+                                                    Date of birth: 8.10.1975 <span className={styles.num}>8</span>
+                                                    <input type="text" placeholder='..................................' onChange={(event) => handleAnswerChange(event, 8)} />
                                                 </label>
                                                 <label>
-                                                    Address: <span className={styles.num}>8</span>
-                                                    <input type="text" placeholder='..................................'/> (street) Callington (town)
+                                                    Address: <span className={styles.num}>9</span>
+                                                    <input type="text" placeholder='....................................................................' onChange={(event) => handleAnswerChange(event, 9)} /> (street) Callington (town)
                                                 </label>
                                                  <label>
                                                     Policy number: <span className={styles.num}>10</span>
-                                                    <input type="text" placeholder='..................................'/> (street) Callington (town)
+                                                    <input type="text" placeholder='....................................................................' onChange={(event) => handleAnswerChange(event, 10)} /> 
                                                 </label>
+                                                {!isValid && <span style={{ color: '#bd6a7a' }} className={styles.warning}>Please enter no more than three words and/or numbers for each question.</span>}
                                             </form>
                                     </div>
                                 </div>
@@ -181,14 +306,23 @@ const Form = () => {
                                         <img src={img}/>
                                     </div>
                                     <div className={styles.questions__part2__questions}>
-                                        <div className={styles.num_question}>
+                                        {/* <div className={styles.num_question}>
                                             <p className={styles.num}>11</p>
                                             <label>
                                                 traffic lights
-                                                <input type="text" placeholder=' ..................................'/>
+                                                <input type="text" placeholder=' ..................................' onChange={(event) => handleOptionChange(event, 11)}/>
+                                            </label>
+                                        </div> */}
+                                        {questions.slice(10, 13).map((question, index) => (
+                                            <div className={styles.num_question}>
+                                            <p className={styles.num}>{question['no']}</p>
+                                            <label>
+                                                {question['question']}
+                                                <input type="text" placeholder=' ..................................' onChange={(event) => handleOptionChange(event, question['no'])}/>
                                             </label>
                                         </div>
-                                        <div className={styles.num_question}>
+                                        ))}
+                                        {/* <div className={styles.num_question}>
                                             <p className={styles.num}>12</p>
                                             <label>
                                                 petrol station
@@ -201,7 +335,7 @@ const Form = () => {
                                                 blue van
                                                 <input type="text" placeholder=' ..................................'/>
                                             </label>
-                                        </div>
+                                        </div> */}
                                     </div>
 
                                     <div className={styles.questions__part2__question2}>
@@ -211,42 +345,22 @@ const Form = () => {
                                         </div>
                                         <p><i>Answer the following questions using NO MORE THAN THREE WORDS AND/OR NUMBER for each answer.</i></p>
                                         
-                                    <div className={styles.questions__part2__question2__num}>
-                                        <div className={styles.num_question}>
-                                            <p className={styles.num}>14</p>
-                                            <p>What end of the market are the properties?</p>
+                                    {questions.slice(13, 16).map((question, index) => (
+                                        <div className={styles.questions__part2__question2__num}>
+                                            <div className={styles.num_question}>
+                                                <p className={styles.num}>{question['no']}</p>
+                                                <p>{question['question']}</p>
+                                            </div>
+                                            <div>
+                                                <label>
+                                                    <i>answer</i>
+                                                    <input type="text" placeholder=' ..................................' onChange={(event) => handleAnswerChange2(event, question['no'])}/>
+                                                </label>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <label>
-                                                <i>answer</i>
-                                                <input type="text" placeholder=' ..................................'/>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className={styles.questions__part2__question2__num}>
-                                        <div className={styles.num_question}>
-                                            <p className={styles.num}>15</p>
-                                            <p>What end of the market are the properties?</p>
-                                        </div>
-                                        <div>
-                                            <label>
-                                                <i>answer</i>
-                                                <input type="text" placeholder=' ..................................'/>
-                                            </label>
-                                        </div>
-                                    </div>
-                                    <div className={styles.questions__part2__question2__num}>
-                                        <div className={styles.num_question}>
-                                            <p className={styles.num}>16</p>
-                                            <p>What end of the market are the properties?</p>
-                                        </div>
-                                        <div>
-                                            <label>
-                                                <i>answer</i>
-                                                <input type="text" placeholder=' ..................................'/>
-                                            </label>
-                                        </div>
-                                    </div>
+                                    ))}
+                                       {!isValid2 && <p style={{ color: '#bd6a7a' }} className={styles.warning}>Please enter no more than three words and/or numbers for each question.</p>}
+                                            
                                     </div>
                                 </div>
                             </div>
@@ -254,11 +368,51 @@ const Form = () => {
                             </form>
                         </div>
                     </div>
+                    
                     <div className={styles.kobi_container_hero_wrapper__questionsstatus}>
                         <h5>Question Status</h5>
                         <p>Lorem ipsum dolor sit amet</p>
+                        {/* <div className={styles.status}>
+                            <div className={`${styles.status__answer} answer`} style={{ backgroundColor: 'yellow'}}><p>1</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>2</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>3</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>4</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>5</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>6</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>7</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>8</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>9</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>10</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>11</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>12</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>13</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>14</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>15</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>16</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>17</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>18</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>19</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>20</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>21</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>22</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>23</p></div>
+                            <div className={`${styles.status__answer} answer`}><p>24</p></div>
+                        </div> */}
                         <div className={styles.status}>
-
+                            {questions.map((question, index) => (
+                                <div className={`${styles.status__answer} answer`} style={{ backgroundColor: question['answer'] !== "" ? "#caf0ec" : "#fbd9de" }}><p>{question['no']}</p></div>
+                            ))}
+                        </div>
+                        <div className={styles.ket}>
+                            <h5>Ket</h5>
+                            <div className={styles.ket_circle}>
+                                <div className={styles.circle_blue}></div>
+                                <p>Answered</p>
+                            </div>
+                            <div className={styles.ket_circle}>
+                                <div className={styles.circle_red}></div>
+                                <p>Unanswered</p>
+                            </div>
                         </div>
                     </div>
                 </div>
