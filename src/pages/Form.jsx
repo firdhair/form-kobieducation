@@ -9,8 +9,8 @@ import { MdHeadsetMic } from 'react-icons/md'
 import audio_1 from '../media/audio/audio_1.mp3'
 import img from '../media/img/no-image.png'
 // import necessary components //
-import List from "../components/List"
-import Modal from "../components/Modal"
+import Part1 from '../components/Part1'
+import Part2 from '../components/Part2'
 
 const Form = () => { 
     const audioRef = useRef(null);
@@ -161,17 +161,27 @@ const Form = () => {
         },
     ])
 
-    const handleOptionChange = (e, index) => {
+    const handleOptionChange = (event, index) => {
         const newQuestions = [...questions]
         newQuestions[index-1] = {
             no: index,
             question: questions[index-1]['question'],
             options: questions[index-1]['options'],
-            answer: `${e.target.value}`
+            answer: `${event.target.value}`
         }
         setQuestions(newQuestions)
     };
-    
+
+    const cancelAnswerChange = (event, index) => {
+        const newQuestions = [...questions]
+        newQuestions[index-1] = {
+            no: index,
+            question: questions[index-1]['question'],
+            options: questions[index-1]['options'],
+            answer: ``
+        }
+        setQuestions(newQuestions)
+    }
 
     const validation = (event) => {
         //console.log("test handle")
@@ -179,7 +189,6 @@ const Form = () => {
         const regex = /^(?!.*\d)(\w+\s*){1,3}$/;
 
         setIsValid(regex.test(input));
-        console.log("apakah valid", isValid)
         if(!isValid){
             setIsMoreThan3(true)
         } else if(isValid){
@@ -189,21 +198,10 @@ const Form = () => {
     }
 
     const handleAnswerChange = (event, index) => {
-        const newQuestions = [...questions]
-        console.log("handleAnswerChange")
-        if(!validation(event)){
-            console.log("salah")
-            newQuestions[index-1] = {
-                no: index,
-                question: questions[index-1]['question'],
-                options: questions[index-1]['options'],
-                answer: ``
-            }
-            setQuestions(newQuestions)
+        if(!validation(event)){  
+            cancelAnswerChange(event, index)
         }
         if(validation(event)) {
-            console.log("validation true")
-            //setIsValid(true)
             try {
                 //setIsValid(true)
                 handleOptionChange(event, index)
@@ -214,26 +212,16 @@ const Form = () => {
     }
 
     const handleAnswerChange2 = (event, index) => {
-        console.log("handleAnswerChange2")
         const input = event.target.value;
         const regex = /^(?!.*\d)(\w+\s*){1,3}$/;
-        const newQuestions = [...questions]
 
         setIsValid2(regex.test(input));
 
         if(!isValid2){
-            console.log("salah2")
-            newQuestions[index-1] = {
-                no: index,
-                question: questions[index-1]['question'],
-                options: questions[index-1]['options'],
-                answer: ``
-            }
-            setQuestions(newQuestions)
+            cancelAnswerChange(event, index)
             setHasMoreThan3(true)
         }
         else if(isValid2) {
-            console.log("validation2 true", event.target.value)
             setHasMoreThan3(false)
             //setIsValid2(true)
             try {
@@ -288,126 +276,8 @@ const Form = () => {
                             </div>
                             <form>
                                 
-                            <div className={styles.kobi_questions__part1}>
-                                <div className={styles.questions__part1__title}>
-                                    <h5>Part 1</h5> 
-                                    <p>(Question 1-10)</p>
-                                </div>
-                                <div className={`${styles.questions__part1__question1}`}>
-                                    <div className={styles.questions__part1__question1__info}>
-                                        <p>Question 1-6</p>
-                                        <button className={styles.button_1} onClick={handlePlay}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
-                                    </div>
-                                    <p><i>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</i></p>
-                                    {questions.slice(0,6).map((question, index) => (
-                                        <div className={styles.questions__part1__question1__num} key={index}>
-                                            <div className={styles.num_question}>
-                                                <p className={styles.num}>{question['no']}</p>
-                                                <p>{question['question']}</p>
-                                            </div>
-                                            <div className={styles.options}>
-                                                    {question['options'].map((option) => (
-                                                        <label>
-                                                            <input type="radio" value={option} checked={option === question['answer']} onChange={(e) => handleOptionChange(e, question['no'])} />
-                                                            {option}
-                                                        </label>
-                                                    ))}
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                                <div className={`${styles.questions__part1__question2}`}>
-                                    <div className={styles.questions__part1__question1__info}>
-                                        <p>Question 7-10</p>
-                                        <button className={styles.button_1} onClick={handlePlay}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
-                                    </div>
-                                    <p><i>Complete the form below, using NO MORE THAN THREE WORDS AND/OR NUMBER for each answer.</i></p>
-                                    <div className={styles.questions__part1__question2__form}>
-                                            <p>Travel Safe</p>
-                                           <form>
-                                                <label>
-                                                    Department: Motor Insurance
-                                                </label>
-                                                <br/>
-                                                <label>
-                                                    Client details:
-                                                </label>
-                                                <label>
-                                                    Name: Elisabeth <span className={styles.num}>7</span>
-                                                    <input type="text" placeholder='..................................' onChange={(event) => handleAnswerChange(event, 7)} />
-                                                </label>
-                                                <label>
-                                                    Date of birth: 8.10.1975 <span className={styles.num}>8</span>
-                                                    <input type="text" placeholder='..................................' onChange={(event) => handleAnswerChange(event, 8)} />
-                                                </label>
-                                                <label>
-                                                    Address: <span className={styles.num}>9</span>
-                                                    <input type="text" placeholder='....................................................................' onChange={(event) => handleAnswerChange(event, 9)} /> (street) Callington (town)
-                                                </label>
-                                                 <label>
-                                                    Policy number: <span className={styles.num}>10</span>
-                                                    <input type="text" placeholder='....................................................................' onChange={(event) => handleAnswerChange(event, 10)} /> 
-                                                </label>
-                                                {!isValid &&  isMoreThan3 && <span style={{ color: '#bd6a7a' }} className={styles.warning}>Please enter no more than three words and/or numbers for each question.</span>}
-                                            </form>
-                                    </div>
-                                </div>
-                            </div>
-                            <div className={styles.kobi_questions__part2}>
-                                <div className={styles.questions__part2__title}>
-                                    <h5>Part 2</h5> 
-                                    <p>(Question 11-24)</p>
-                                </div>
-                                <div className={`${styles.questions__part2__question1}`}>
-                                    <div className={styles.questions__part2__question1__info}>
-                                        <p>Question 11-13</p>
-                                        <button className={styles.button_1} onClick={handlePlay}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
-                                    </div>
-                                    <div className={styles.diagram}>
-                                        <p><i>Label the diagram/plan below</i></p>
-                                        <p><i>Write the correct letter, A-G next to question 11-13</i></p>
-                                    </div>
-                                    <div className={styles.questions__part2__question1__image}>
-                                        <img src={img}/>
-                                    </div>
-                                    <div className={styles.questions__part2__questions}>
-                                        {questions.slice(10, 13).map((question, index) => (
-                                            <div className={styles.num_question}>
-                                            <p className={styles.num}>{question['no']}</p>
-                                            <label>
-                                                {question['question']}
-                                                <input type="text" placeholder=' ..................................' onChange={(event) => handleOptionChange(event, question['no'])}/>
-                                            </label>
-                                        </div>
-                                        ))}
-                                    </div>
-
-                                    <div className={styles.questions__part2__question2}>
-                                        <div className={styles.questions__part2__question2__info}>
-                                            <p>Question 14-20</p>
-                                            <button className={styles.button_1} onClick={handlePlay}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
-                                        </div>
-                                        <p><i>Answer the following questions using NO MORE THAN THREE WORDS AND/OR NUMBER for each answer.</i></p>
-                                        
-                                    {questions.slice(13, 16).map((question, index) => (
-                                        <div className={styles.questions__part2__question2__num}>
-                                            <div className={styles.num_question}>
-                                                <p className={styles.num}>{question['no']}</p>
-                                                <p>{question['question']}</p>
-                                            </div>
-                                            <div>
-                                                <label>
-                                                    <i>answer</i>
-                                                    <input type="text" placeholder=' ..................................' onChange={(event) => handleAnswerChange2(event, question['no'])}/>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    ))}
-                                       {!isValid2 && hasMoreThan3 && <p style={{ color: '#bd6a7a' }} className={styles.warning}>Please enter no more than three words and/or numbers for each question.</p>}
-                                            
-                                    </div>
-                                </div>
-                            </div>
+                            <Part1 questions={questions} isValid={isValid} handlePlay={handlePlay} isMoreThan3={isMoreThan3} handleAnswerChange={handleAnswerChange} handleOptionChange={handleOptionChange}/>
+                            <Part2 questions={questions} isValid2={isValid2} handlePlay={handlePlay} hasMoreThan3={hasMoreThan3} handleAnswerChange2={handleAnswerChange2} handleOptionChange={handleOptionChange}/>
                             <button type="submit" className={styles.submit}>Submit</button>
                             </form>
                         </div>
@@ -416,32 +286,6 @@ const Form = () => {
                     <div className={styles.kobi_container_hero_wrapper__questionsstatus}>
                         <h5>Question Status</h5>
                         <p>Lorem ipsum dolor sit amet</p>
-                        {/* <div className={styles.status}>
-                            <div className={`${styles.status__answer} answer`} style={{ backgroundColor: 'yellow'}}><p>1</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>2</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>3</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>4</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>5</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>6</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>7</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>8</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>9</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>10</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>11</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>12</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>13</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>14</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>15</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>16</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>17</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>18</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>19</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>20</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>21</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>22</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>23</p></div>
-                            <div className={`${styles.status__answer} answer`}><p>24</p></div>
-                        </div> */}
                         <div className={styles.status}>
                             {questions.map((question, index) => (
                                 <div className={`${styles.status__answer} answer`} style={{ backgroundColor: question['answer'] !== "" ? "#caf0ec" : "#fbd9de" }}><p>{question['no']}</p></div>
