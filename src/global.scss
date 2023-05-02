@@ -58,6 +58,12 @@ h4 {
 
 h5 {
   font-size: mixin.$medium-3;
+  @include mixin.mobile {
+    font-size: mixin.$medium-2;
+  }
+  @include mixin.tablet {
+    font-size: mixin.$regular-1;
+  }
 }
 
 ul {

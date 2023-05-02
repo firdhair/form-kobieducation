@@ -1,11 +1,11 @@
 // import necessary dependencies //
-import { useState, useEffect } from 'react'; 
-import uniqid from "uniqid"
+import { useState, useRef } from 'react'; 
 // import styling //
 import styles from "./Form.module.scss"
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { TbClockHour3 } from 'react-icons/tb'
 import { MdHeadsetMic } from 'react-icons/md'
+// import necessary media //
 import audio_1 from '../media/audio/audio_1.mp3'
 import img from '../media/img/no-image.png'
 // import necessary components //
@@ -13,9 +13,12 @@ import List from "../components/List"
 import Modal from "../components/Modal"
 
 const Form = () => { 
-  const [isValid, setIsValid] = useState(true);
-  const [isValid2, setIsValid2] = useState(true);
-  const [isMoreThanThreeWords, setIsMoreThanThreeWords] = useState(false)
+    const audioRef = useRef(null);
+    const [isValid, setIsValid] = useState(true);
+    const [isValid2, setIsValid2] = useState(true);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [isMoreThan3, setIsMoreThan3] = useState(false);
+    const [hasMoreThan3, setHasMoreThan3] = useState(false);
 
     const [questions, setQuestions] = useState([
         {   no: 1, 
@@ -108,6 +111,54 @@ const Form = () => {
             options: [],
             answer: ''
         },
+        {
+            no: 17,
+            question: '',
+            options: [],
+            answer: 'answer'
+        },
+        {
+            no: 18,
+            question: '',
+            options: [],
+            answer: 'answer'
+        },
+        {
+            no: 19,
+            question: '',
+            options: [],
+            answer: 'answer'
+        },
+        {
+            no: 20,
+            question: '',
+            options: [],
+            answer: 'answer'
+        },
+        {
+            no: 21,
+            question: '',
+            options: [],
+            answer: 'answer'
+        },
+        {
+            no: 22,
+            question: '',
+            options: [],
+            answer: 'answer'
+        },
+        {
+            no: 23,
+            question: '',
+            options: [],
+            answer: ''
+        },
+        {
+            no: 24,
+            question: '',
+            options: [],
+            answer: ''
+        },
     ])
 
     const handleOptionChange = (e, index) => {
@@ -120,13 +171,20 @@ const Form = () => {
         }
         setQuestions(newQuestions)
     };
+    
 
     const validation = (event) => {
-        console.log("test handle")
+        //console.log("test handle")
         const input = event.target.value;
-        const regex = /^(\w+\s*){1,3}$/;
+        const regex = /^(?!.*\d)(\w+\s*){1,3}$/;
 
         setIsValid(regex.test(input));
+        console.log("apakah valid", isValid)
+        if(!isValid){
+            setIsMoreThan3(true)
+        } else if(isValid){
+            setIsMoreThan3(false)
+        }
         return isValid
     }
 
@@ -143,9 +201,11 @@ const Form = () => {
             }
             setQuestions(newQuestions)
         }
-        else if(validation(event)) {
+        if(validation(event)) {
             console.log("validation true")
+            //setIsValid(true)
             try {
+                //setIsValid(true)
                 handleOptionChange(event, index)
             } catch(e){
                 console.log("error", e)
@@ -156,19 +216,10 @@ const Form = () => {
     const handleAnswerChange2 = (event, index) => {
         console.log("handleAnswerChange2")
         const input = event.target.value;
-        const regex = /^(\w+\s*){1,3}$/;
+        const regex = /^(?!.*\d)(\w+\s*){1,3}$/;
         const newQuestions = [...questions]
 
         setIsValid2(regex.test(input));
-
-        // if(isValid2 === true) {
-        //     console.log("validation2 true")
-        //     try {
-        //         handleOptionChange(event, index)
-        //     } catch(e){
-        //         console.log("error", e)
-        //     }
-        // }
 
         if(!isValid2){
             console.log("salah2")
@@ -179,9 +230,12 @@ const Form = () => {
                 answer: ``
             }
             setQuestions(newQuestions)
+            setHasMoreThan3(true)
         }
         else if(isValid2) {
-            console.log("validation2 true")
+            console.log("validation2 true", event.target.value)
+            setHasMoreThan3(false)
+            //setIsValid2(true)
             try {
                 handleOptionChange(event, index)
             } catch(e){
@@ -189,6 +243,17 @@ const Form = () => {
             }
         }
     }
+
+    const handlePlay = (event) => {
+        event.preventDefault()
+        if (isPlaying) {
+            audioRef.current.pause();
+        } else {
+            audioRef.current.play();
+        }
+        setIsPlaying(!isPlaying);
+    };
+
 
     return(
         <div className={styles.kobi_wrapper}> 
@@ -216,7 +281,7 @@ const Form = () => {
                                     <button><TbClockHour3/> <span>Time Left 44.55</span></button>
                                </div>  
                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel leo ipsum. Quisque nisl erat, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                <audio controls className={styles.questions_audio}>
+                                <audio controls className={styles.questions_audio} ref={audioRef}>
                                     <source src={audio_1} type="audio/mpeg" />
                                     Your browser does not support the audio element.
                                 </audio>
@@ -231,7 +296,7 @@ const Form = () => {
                                 <div className={`${styles.questions__part1__question1}`}>
                                     <div className={styles.questions__part1__question1__info}>
                                         <p>Question 1-6</p>
-                                        <button className={styles.button_1}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
+                                        <button className={styles.button_1} onClick={handlePlay}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
                                     </div>
                                     <p><i>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</i></p>
                                     {questions.slice(0,6).map((question, index) => (
@@ -254,7 +319,7 @@ const Form = () => {
                                 <div className={`${styles.questions__part1__question2}`}>
                                     <div className={styles.questions__part1__question1__info}>
                                         <p>Question 7-10</p>
-                                        <button className={styles.button_1}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
+                                        <button className={styles.button_1} onClick={handlePlay}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
                                     </div>
                                     <p><i>Complete the form below, using NO MORE THAN THREE WORDS AND/OR NUMBER for each answer.</i></p>
                                     <div className={styles.questions__part1__question2__form}>
@@ -283,7 +348,7 @@ const Form = () => {
                                                     Policy number: <span className={styles.num}>10</span>
                                                     <input type="text" placeholder='....................................................................' onChange={(event) => handleAnswerChange(event, 10)} /> 
                                                 </label>
-                                                {!isValid && <span style={{ color: '#bd6a7a' }} className={styles.warning}>Please enter no more than three words and/or numbers for each question.</span>}
+                                                {!isValid &&  isMoreThan3 && <span style={{ color: '#bd6a7a' }} className={styles.warning}>Please enter no more than three words and/or numbers for each question.</span>}
                                             </form>
                                     </div>
                                 </div>
@@ -296,7 +361,7 @@ const Form = () => {
                                 <div className={`${styles.questions__part2__question1}`}>
                                     <div className={styles.questions__part2__question1__info}>
                                         <p>Question 11-13</p>
-                                        <button className={styles.button_1}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
+                                        <button className={styles.button_1} onClick={handlePlay}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
                                     </div>
                                     <div className={styles.diagram}>
                                         <p><i>Label the diagram/plan below</i></p>
@@ -306,13 +371,6 @@ const Form = () => {
                                         <img src={img}/>
                                     </div>
                                     <div className={styles.questions__part2__questions}>
-                                        {/* <div className={styles.num_question}>
-                                            <p className={styles.num}>11</p>
-                                            <label>
-                                                traffic lights
-                                                <input type="text" placeholder=' ..................................' onChange={(event) => handleOptionChange(event, 11)}/>
-                                            </label>
-                                        </div> */}
                                         {questions.slice(10, 13).map((question, index) => (
                                             <div className={styles.num_question}>
                                             <p className={styles.num}>{question['no']}</p>
@@ -322,26 +380,12 @@ const Form = () => {
                                             </label>
                                         </div>
                                         ))}
-                                        {/* <div className={styles.num_question}>
-                                            <p className={styles.num}>12</p>
-                                            <label>
-                                                petrol station
-                                                <input type="text" placeholder=' ..................................'/>
-                                            </label>
-                                        </div>
-                                        <div className={styles.num_question}>
-                                            <p className={styles.num}>13</p>
-                                            <label>
-                                                blue van
-                                                <input type="text" placeholder=' ..................................'/>
-                                            </label>
-                                        </div> */}
                                     </div>
 
                                     <div className={styles.questions__part2__question2}>
                                         <div className={styles.questions__part2__question2__info}>
                                             <p>Question 14-20</p>
-                                            <button className={styles.button_1}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
+                                            <button className={styles.button_1} onClick={handlePlay}> <MdHeadsetMic color="#233644"/> Click here to listen</button>
                                         </div>
                                         <p><i>Answer the following questions using NO MORE THAN THREE WORDS AND/OR NUMBER for each answer.</i></p>
                                         
@@ -359,7 +403,7 @@ const Form = () => {
                                             </div>
                                         </div>
                                     ))}
-                                       {!isValid2 && <p style={{ color: '#bd6a7a' }} className={styles.warning}>Please enter no more than three words and/or numbers for each question.</p>}
+                                       {!isValid2 && hasMoreThan3 && <p style={{ color: '#bd6a7a' }} className={styles.warning}>Please enter no more than three words and/or numbers for each question.</p>}
                                             
                                     </div>
                                 </div>

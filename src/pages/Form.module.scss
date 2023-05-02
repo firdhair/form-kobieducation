@@ -81,12 +81,15 @@
     @include mixin.flex(space-between, flex-start, row);
     @include mixin.mobile {
       flex-wrap: wrap;
-      width: 95%;
-      margin: 4.5rem auto;
+      width: 85%;
+      margin: 2rem auto 3rem auto;
     }
     &__questions {
       flex: 1 1 70%;
       margin: 1rem 6rem 1rem 0rem;
+      @include mixin.mobile {
+        margin: 1rem;
+      }
     }
     &__questionsstatus {
       flex: 1 1 30%;
@@ -97,6 +100,7 @@
 }
 
 .kobi_questions {
+  //background-color: pink;
   &__listening {
     &__upper {
       @include mixin.flex(flex-start, center, row);
@@ -159,6 +163,12 @@
         color: #9badbb;
         font-weight: 500;
         margin: 0;
+        @include mixin.mobile {
+          font-size: mixin.$medium-2;
+        }
+        @include mixin.tablet {
+          font-size: mixin.$regular-1;
+        }
       }
     }
 
@@ -172,6 +182,12 @@
         color: mixin.$blue-400;
         font-size: mixin.$medium-3;
         font-weight: 500;
+        @include mixin.mobile {
+          font-size: mixin.$medium-2;
+        }
+        @include mixin.tablet {
+          font-size: mixin.$regular-1;
+        }
       }
     }
     .questions__part2__question1__image {
@@ -247,6 +263,12 @@
         color: mixin.$blue-400;
         font-size: mixin.$medium-3;
         font-weight: 500;
+        @include mixin.mobile {
+          font-size: mixin.$medium-2;
+        }
+        @include mixin.tablet {
+          font-size: mixin.$regular-1;
+        }
       }
     }
     .questions__part1__question1__num,
@@ -375,13 +397,24 @@
   }
   .status {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
     gap: 1rem;
+    //grid-gap: 1rem;
     margin: 2.5rem 0rem;
+    @include mixin.tablet {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      //background-color: pink;
+    }
+    @include mixin.mobile {
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      //background-color: lavender;
+    }
     &__answer {
       @include mixin.flex(center, center, row);
       //background-color: mixin.$blue-200;
-      padding: 1rem;
+      // padding: 1rem;
+      width: 3rem;
+      height: 3rem;
       border-radius: 50%;
       p {
         color: mixin.$grey-600;
