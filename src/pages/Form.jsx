@@ -1,5 +1,5 @@
 // import necessary dependencies //
-import { useState, useRef } from 'react'; 
+import { useState, useRef, useEffect } from 'react'; 
 // import styling //
 import styles from "./Form.module.scss"
 import { IoIosCloseCircleOutline } from 'react-icons/io';
@@ -17,7 +17,7 @@ const Form = () => {
     const [isPlaying, setIsPlaying] = useState(false);
     const [isMoreThan3, setIsMoreThan3] = useState(false);
     const [hasMoreThan3, setHasMoreThan3] = useState(false);
-
+    const [countdown, setCountdown] = useState(3600);
     const [questions, setQuestions] = useState([
         {   no: 1, 
             question: 'Where is the woman from?',
@@ -159,6 +159,20 @@ const Form = () => {
         },
     ])
 
+    const validation = (event) => {
+        //console.log("test handle")
+        const input = event.target.value;
+        const regex = /^(?!.*\d)(\w+\s*){1,3}$/;
+
+        setIsValid(regex.test(input));
+        if(!isValid){
+            setIsMoreThan3(true)
+        } else if(isValid){
+            setIsMoreThan3(false)
+        }
+        return isValid
+    }
+
     const handleOptionChange = (event, index) => {
         const newQuestions = [...questions]
         newQuestions[index-1] = {
@@ -179,20 +193,6 @@ const Form = () => {
             answer: ``
         }
         setQuestions(newQuestions)
-    }
-
-    const validation = (event) => {
-        //console.log("test handle")
-        const input = event.target.value;
-        const regex = /^(?!.*\d)(\w+\s*){1,3}$/;
-
-        setIsValid(regex.test(input));
-        if(!isValid){
-            setIsMoreThan3(true)
-        } else if(isValid){
-            setIsMoreThan3(false)
-        }
-        return isValid
     }
 
     const handleAnswerChange = (event, index) => {
@@ -240,6 +240,19 @@ const Form = () => {
         setIsPlaying(!isPlaying);
     };
 
+    useEffect(() => {
+        const timer = setInterval(() => {
+        if (countdown > 0) {
+            setCountdown(countdown - 1);
+        }
+        }, 1000);
+
+        return () => clearInterval(timer);
+    }, [countdown]);
+
+    const minutes = Math.floor(countdown / 60);
+    const seconds = countdown % 60;
+    const timeLeft = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`
 
     return(
         <div className={styles.kobi_wrapper}> 
@@ -264,7 +277,7 @@ const Form = () => {
                             <div className={styles.kobi_questions__listening}>
                                <div className={styles.kobi_questions__listening__upper}>
                                     <h4>Listening Tip</h4>
-                                    <button><TbClockHour3/> <span>Time Left 44.55</span></button>
+                                    <button><TbClockHour3/> <span>Time Left {timeLeft}</span></button>
                                </div>  
                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque vel leo ipsum. Quisque nisl erat, Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
                                 <audio controls className={styles.questions_audio} ref={audioRef}>
