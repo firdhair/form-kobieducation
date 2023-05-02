@@ -4,10 +4,8 @@ import { useState, useRef } from 'react';
 import styles from "./Form.module.scss"
 import { IoIosCloseCircleOutline } from 'react-icons/io';
 import { TbClockHour3 } from 'react-icons/tb'
-import { MdHeadsetMic } from 'react-icons/md'
 // import necessary media //
 import audio_1 from '../media/audio/audio_1.mp3'
-import img from '../media/img/no-image.png'
 // import necessary components //
 import Part1 from '../components/Part1'
 import Part2 from '../components/Part2'

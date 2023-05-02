@@ -372,6 +372,9 @@
   background-color: mixin.$blue-100;
   border: 2.5px solid mixin.$blue-300;
   margin: 0rem 0.5rem;
+  @include mixin.mobile {
+    margin: 0rem;
+  }
   cursor: pointer;
 }
 
